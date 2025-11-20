@@ -8,13 +8,14 @@ num = int(input("Introduce un número (para que lo adivinen): "))
 
 intento = 0
 if (num == 0): intento - 1
+
 while (intento != num):
     intento = int(input("Introduce un número a ver si adivinas: "))
     if intento == num:
         print("Has acertado")
     elif intento < num:
-        print("Es número es mayor")
+        print("Es número a adivinar es mayor")
     else:
-        print("El número es menor")
+        print("El número a adivinar es menor")
 
 

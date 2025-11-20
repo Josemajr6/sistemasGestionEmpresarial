@@ -11,7 +11,7 @@ match mes:
     case 4 | 6 | 9 | 11:
         print("El mes tiene 30 días")
     case 2:
-        dias = 28
+        print("El mes tiene 28 días")
     case _:
         print("Introduce un número entre 1 y 12")
 
