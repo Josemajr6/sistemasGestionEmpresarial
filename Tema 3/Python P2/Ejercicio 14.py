@@ -8,6 +8,7 @@ for i in range(1, 11):
 numeros.reverse()
 
 textoAMostrar = ""
+
 for i in range(len(numeros)):
     if i != len(numeros)-1:
         textoAMostrar += str(numeros[i]) + ", "
