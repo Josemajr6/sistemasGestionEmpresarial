@@ -1,14 +1,14 @@
-import datetime
+from datetime import datetime
 
-class Empleado ():
+class Empleado:
     contador_empleado = 0
 
-    def __init__(self, idEmpleado, nombre, edad, cargo, salario, fecha_contratacion, correo, telefono, direccion, horario, contrato, fecha_salida):
-        self.idEmpleado = idEmpleado
+    def __init__(self, id_empleado, nombre, edad, cargo, salario, fecha_contratacion, correo, telefono, direccion, horario, contrato=True, fecha_salida=None):
+        self.id_empleado = id_empleado
         self.nombre = nombre
-        self.edad = edad
+        self.edad = int(edad)
         self.cargo = cargo
-        self.salario = salario
+        self.salario = float(salario)
         self.fecha_contratacion = fecha_contratacion
         self.correo = correo
         self.telefono = telefono
@@ -16,21 +16,18 @@ class Empleado ():
         self.horario = horario
         self.contrato = contrato
         self.fecha_salida = fecha_salida
-    
+        Empleado.contador_empleado += 1
+
     def __str__(self):
-        return f"{self.idEmpleado} {self.nombre} {self.edad} {self.cargo} {self.salario} {self.fecha_contratacion} {self.correo} {self.telefono} {self.direccion} {self.horario} {self.contrato} {self.fecha_salida}"
-        
-    def __repr__(self):
-        return str(self)
-        
-    def despedir(e):
-        if (e.contrato == True):
-             e.contrato == False
-             e.fecha_salida = "2025-12-1"
-             print(f"{e.nombre} ha sido despedido en la fecha: {e.fecha_salida}")
+        estado = "Contratado" if self.contrato else "No contratado"
+        return f"ID: {self.id_empleado} | {self.nombre} | {self.edad} años | {self.cargo} | {self.salario}€ | {estado} | Salida: {self.fecha_salida}"
+
+    def Despedir(self):
+        if self.contrato:
+            self.contrato = False
+            self.fecha_salida = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         else:
-            print(f"El empleado {e.nombre} ya estaba despedido")
-            
+            pass
 
 # eJuan = Empleado(1, "Juan", 19, "Programador", 1500, "2019-10-10", "juan@gmail.con", "+34 722 62 52 88", "Calle Murillo 3, Osuna", "L-V 8:00-15:00", True, None)
 

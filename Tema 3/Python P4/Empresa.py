@@ -1,45 +1,41 @@
 from Empleado import Empleado
 
-class Empresa():
+class Empresa:
     contador_empresa = 0
-    def __init__(self, nombre, direccion, industria, telefono, correo, empleado):
+
+    def __init__(self, nombre, direccion, industria, telefono, correo):
         self.nombre = nombre
         self.direccion = direccion
         self.industria = industria
         self.telefono = telefono
         self.correo = correo
-        self.empleado = empleado
-    
+        self.empleado = []
+        Empresa.contador_empresa += 1
+
     def __str__(self):
-        return f"{self.nombre} {self.direccion} {self.industria} {self.telefono} {self.correo} {self.empleado}"
-    
-    def agregar_empleado(self, em):
+        return f"Empresa: {self.nombre} | {self.industria} | Empleados: {len(self.empleado)}"
 
-        if isinstance(em, Empleado):
-            self.empleado.append(em)
-            print(f"Se ha añadido a {em.nombre} a la lista de empleados")
-        else:
-            print(f"El empleado {em.nombre} ya existe en la lista de empleados")
-
-    def eliminar_empleado(self, idEmpleado):
-        existe = True
+    def agregar_empleado(self, nuevo_empleado):
         for e in self.empleado:
-            if (e.idEmpleado == idEmpleado):
-                existe = True
-                em = e
-        if (existe == True):
-            self.empleado.remove(e)
-            print(f"Se ha borrado a {em.nombre} de la lista de empleados")
-        else:
-            print(f"El empleado con ID {idEmpleado} no existe existe en la lista de empleados")
+            if e.id_empleado == nuevo_empleado.id_empleado:
+                print("Error: El empleado ya existe.")
+                return
+        self.empleado.append(nuevo_empleado)
+
+    def eliminar_empleado(self, id_empleado):
+        for e in self.empleado:
+            if e.id_empleado == id_empleado:
+                self.empleado.remove(e)
+                return
+        print("Error: No existe empleado con ese ID.")
 
     def calcular_costo_salarial(self):
-        suma = 0
+        total = 0
         for e in self.empleado:
-            suma += e.salario
-        return suma
-    
-    def lista_empleados(self):
+            if e.contrato:
+                total += e.salario
+        return total
+
+    def listar_empleados(self):
         for e in self.empleado:
             print(e)
-    
