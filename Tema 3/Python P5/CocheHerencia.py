@@ -5,9 +5,8 @@ class Coche:
     contadorcoches = 0
 
 
-# Este método es el constructor de la clase. Solo puede haber 1
     def __init__(self, color, marca, modelo):
-        #Todos estos son atributos de la clase.
+
         self.color = color
         self.aceleracion = 0
         self.velocidad = 0
@@ -17,6 +16,30 @@ class Coche:
         self.matricula = ""
 
         Coche.contadorcoches += 1
+
+    def get_color(self):
+        return self.color
+
+    def set_color(self, color):
+        self.color = color
+
+    def get_marca(self):
+        return self.marca
+
+    def set_marca(self, marca):
+        self.marca = marca
+
+    def get_modelo(self):
+        return self.modelo
+
+    def set_modelo(self, modelo):
+        self.modelo = modelo
+
+    def get_velocidad(self):
+        return self.velocidad
+
+    def set_velocidad(self, velocidad):
+        self.velocidad = velocidad
 
 #Método para acelerar
     def acelerar (self,aceleracion):
@@ -37,6 +60,10 @@ class Coche:
 #Método para rugir
     def rugir(self):
         print ("Brrrrrrr")
+        
+    def __str__(self):
+        return f"Marca: {self.marca}, Modelo: {self.modelo}, Color: {self.color}, Velocidad: {self.velocidad} km/h"
+
 
 
 # Puede haber otra clase en el mismo fichero
@@ -55,27 +82,33 @@ class Cochemarchas(Coche):
         self.marchaactual=0
 
         self.frenomano=True
+        
+    def get_marchas_totales(self):
+        return self.marchas
+
+    def get_marcha_actual(self):
+        return self.marchaactual
 
 
     def cambiomarcha(self, nuevamarcha):
-        if nuevamarcha == -1 and (self.velocidad > 0 or self.marcha != 0):
+        if nuevamarcha == -1 and (self.velocidad > 0 or self.marchaactual != 0):
             print ("Error: Para marcha atrás el coche debe estar parado y en punto muerto")
             return
         
         if nuevamarcha >= 4 and self.velocidad < 20:
             print("El coche se ha callado")
             self.velocidad = 0
-            self.marcha = 0
+            self.marchaactual = 0
             return
         
         if nuevamarcha <= 2 and self.velocidad > 80:
             print("Aviso: El coche está muy revolucionado")
             
-        self.marcha = nuevamarcha
-        print(f"Has cambiado a la marcha {self.marcha}")
+        self.marchaactual = nuevamarcha
+        print(f"Has cambiado a la marcha {self.marchaactual}")
 
     def ponerpuntomuerto(self):
-        self.marcha = 0
+        self.marchaactual = 0
         print("El coche está en punto muerto")
 
     def ponerfrenomano(self):
@@ -90,8 +123,46 @@ class Cochemarchas(Coche):
         self.frenomano = False
         print("Freno de mando quitado")
     
-    
+    def rugir(self):
+        if self.marchaactual == 0:
+            print("shhh")
+        else:
+            print("¡¡POOOMM!!")
+            
+            
+    def __str__(self):
+        return super().__str__() + f", Marcha: {self.marchaactual}/{self.marchas}, Freno Mano: {self.frenomano}"
 
+class Cocheautomatico(Coche):
+    def __init__(self, color, marca, modelo):
+        super().__init__(color, marca, modelo)
+        self.modo = 'P'
+
+    def get_modo(self):
+        return self.modo
+
+    def cambiarmodo(self, nuevo_modo):
+        nuevo_modo = nuevo_modo.upper() 
+        valoresmodos = ['P', 'R', 'N', 'D']
+        
+        if nuevo_modo in valoresmodos:
+            self.modo = nuevo_modo
+            print(f"Modo automático cambiado a: {self.modo}")
+        else:
+            print("Modo inválido. Usa P, R, N o D")
+            
+    def rugir(self):
+        if self.modo == 'P' or self.modo == 'N':
+            print("...")
+        elif self.modo == 'R':
+            print("Piiii... Pii... Pi.....")
+        elif self.modo == 'D':
+            print("Sshhhhhhh tssss")
+    
+    def __str__(self):
+        return super().__str__() + f", Modo: {self.modo}"
+            
+    
 
 def principal():
 
@@ -164,31 +235,69 @@ def principal():
     
     print(f"Coche: {a1.marca} {a1.modelo} - Marchas: {a1.marchas}")
     a1.acelerar(80)
-    print(f"Velocidad actual: {a1.velocidad}")
+    print(f"Velocidad actual: {a1.get_velocidad()}")
     
     print(f"Contador después de crear el Audi: {Coche.contadorcoches}")  
     
     print("\nPrueba básica:")
     a1.quitarfrenomano()
     a1.cambiomarcha(1)
+    a1.rugir()
     
     print("\nPrueba de calado")
-    a1.velocidad = 10
+    a1.set_velocidad(10)
     a1.cambiomarcha(5) # Esto tiene que calar el coche
     
     print("\nPrueba de revoluciones (le ponemos mucha velocidad con una marcha baja)")
-    a1.velocidad = 100
+    a1.set_velocidad(100)
     a1.cambiomarcha(2)
     
     print("\nPrueba de marcha atrás")
-    a1.velocidad = 5
+    a1.set_velocidad(5)
     a1.cambiomarcha(-1) # Como se está moviendo dará error
     
     print("\nPrueba de freno de mano y punto muerto")
-    a1.velocidad = 0
+    a1.set_velocidad = 0
     a1.ponerpuntomuerto()
+    a1.rugir()
     a1.cambiomarcha(-1) # Ahora si deja poner la marcha atrás
     a1.ponerfrenomano()
+    
+    tesla = Cocheautomatico('blanco', 'Tesla', 'Model 3')
+    print(f"Coche automático: {tesla.marca} {tesla.modelo}")
+    
+    # Muestro el modo actual y llamo a rugir()
+    print(f"Modo actual: {tesla.modo}")
+    tesla.rugir() 
+    
+    # Cambio a Drive y lalamo a acelar()
+    tesla.cambiarmodo('D')
+    tesla.acelerar(50) # Acelerar va a llamar a rugir()
+    
+    # Pongo la reversa
+    tesla.cambiarmodo('R')
+    tesla.rugir() # Tiene que sonar el pi... pi.. pi.....
+    
+    # Prueba de error
+    tesla.cambiarmodo('X') 
+    
+    garaje = []
+
+ 
+    garaje.append(c1)  
+    garaje.append(a1)   
+    garaje.append(tesla) 
+
+
+    ferrari = Cochemarchas(6, 'Rojo', 'Ferrari', 'F40')
+    ferrari.cambiomarcha(1) # 
+    garaje.append(ferrari)
+
+
+    for vehiculo in garaje:
+        print(f"\nSonido del {vehiculo.get_marca()} {vehiculo.get_modelo()}:")
+        vehiculo.rugir()
+
     
 #Punto de entrada a la ejecución del programa en Python
 if __name__ == '__main__':
